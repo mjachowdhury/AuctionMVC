@@ -1,0 +1,48 @@
+﻿@Model AuctionMVCSite.Models.Auction
+
+
+
+@{ 
+    //ViewData, ViewBag and Model 3 way can be render the controller with view
+
+    //can be use either VireData or ViewBag
+    //var auction = (AuctionMVCSite.Models.Auction)ViewData["Auction"];
+    //var auction = ViewBag.Auction;
+
+    var auction = Model;
+}
+
+<a href="@Url.Action("Login", "Account")">Login</a>
+
+<div class="auction">
+    <h3>@auction.Title</h3>
+        <p>Start Time: @auction.StartTime.ToString("g")</p>
+        <p>End Time: @auction.EndTime.ToString("g")</p>
+        <p>Starting Price: @auction.StartPrice.ToString("C")</p>
+
+        @*
+            Since CurrentPrice is nullable we have to check to see if it has 
+            a value before we call .ToString()!                     
+        *@
+        
+        <p>Current Price:
+            @if(auction.CurrentPrice == null)
+            {
+                @: [No bids]
+            }
+            else
+            {
+                <span>@auction.CurrentPrice.Value.ToString("C")</span>
+            }
+        </p>
+    @if(auction.ImageUrl != null)
+    {
+        <img src="@auction.ImageUrl" title="@auction.Title" />
+    }
+
+    <div class="description">
+        @auction.Description
+    </div>
+
+</div>
+
