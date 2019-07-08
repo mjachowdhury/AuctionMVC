@@ -1,10 +1,25 @@
 ﻿@model IEnumerable<AuctionMVCSite.Models.Auction>
 
 @{
-    ViewBag.Title = "Index";
+    //putting the shared layout reference
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Auctions";
 }
 
-<h2>Index</h2>
+@section Featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            THis is some featured content!
+        </div>
+    </section>
+}
+
+@section Scripts {
+    <!--This content will be rendered in the Scripts section -->    
+}
+
+<h2>@ViewBag.Title</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -15,6 +30,7 @@
 {
     @Html.Partial("_AuctionTitle", item);
 }
+
 
 //this code will create the table view auction item in the website
 <table class="table">
