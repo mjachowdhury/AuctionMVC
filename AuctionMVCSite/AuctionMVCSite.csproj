@@ -273,6 +273,7 @@
     <Content Include="Views\Auctions\Index.cshtml" />
     <Content Include="Views\Shared\_AuctionTitle.cshtml" />
     <Content Include="Views\Shared\_LayoutWithSidebar.cshtml" />
+    <Content Include="Views\Auctions\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

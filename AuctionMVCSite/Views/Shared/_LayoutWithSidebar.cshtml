@@ -4,23 +4,16 @@
 }
 
 @section Featured {
-    @RenderSection ("Featured", required: false)
-
-    }
-
-
-@section  Scripts {
-    @RenderSection ("Scripts", required: false)
-
+    @RenderSection("Featured", required: false)
 }
-<div class="sidebar">
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}
 
-    @RenderSection("sidebar");
+<div class="sidebar">
+    @RenderSection("sidebar")
 </div>
 
 <div class="content">
-
     @RenderBody()
-
 </div>
-

@@ -9,6 +9,8 @@ namespace AuctionMVCSite.Models
     {
         public long Id { get; set; }
 
+        public long Category { get; set; }
+
         public string Title { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }

@@ -66,5 +66,12 @@ namespace AuctionMVCSite.Controllers
             //I can use to render view like this
             return View(auction);
         }
+
+        public ActionResult Create()
+        {
+            var categoryList = new SelectList(new[] { "Automotive", "Electronics", "Games", "Homes" });
+            ViewBag.CategoryList = categoryList;
+            return View();
+        }
     }
 }
