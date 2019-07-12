@@ -49,7 +49,7 @@ namespace AuctionMVCSite.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Auction()
+        public ActionResult Auction( long id )
         {
             var auction = new AuctionMVCSite.Models.Auction()
             {
@@ -67,7 +67,8 @@ namespace AuctionMVCSite.Controllers
             return View(auction);
         }
 
-        public ActionResult Create()
+        //here [Bind(Exclude ="CurrentPrice")] will ignore the current price from the post so the use ca not see the current price bid
+        public ActionResult Create([Bind(Exclude ="CurrentPrice")] Models.Auction auction)
         {
             var categoryList = new SelectList(new[] { "Automotive", "Electronics", "Games", "Homes" });
             ViewBag.CategoryList = categoryList;
