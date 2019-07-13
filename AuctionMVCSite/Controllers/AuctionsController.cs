@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AuctionMVCSite.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,35 +12,40 @@ namespace AuctionMVCSite.Controllers
         // GET: Auctions
         public ActionResult Index()
         {
-            var auctions = new[]{
-                new Models.Auction()
-                {
-                    Title = "Example Auction #1",
-                    Description = "This is an example Auction",
-                    StartTime = DateTime.Now,
-                    EndTime = DateTime.Now.AddDays(7),
-                    StartPrice = 1.00m,
-                    CurrentPrice = null,
-                },
-                new Models.Auction()
-                {
-                    Title = "Example Auction #2",
-                    Description = "This is an example Auction",
-                    StartTime = DateTime.Now,
-                    EndTime = DateTime.Now.AddDays(7),
-                    StartPrice = 1.00m,
-                    CurrentPrice = null,
-                },
-                new Models.Auction()
-                {
-                    Title = "Example Auction #3",
-                    Description = "This is an example Auction",
-                    StartTime = DateTime.Now,
-                    EndTime = DateTime.Now.AddDays(7),
-                    StartPrice = 1.00m,
-                    CurrentPrice = null,
-                },
-            };
+
+            var db = new AuctionDataContext();
+            var auctions = db.Auctions.ToArray(); //to arra yused to get the collection of auctions form the db
+
+
+            //var auctions = new[]{
+            //    new Models.Auction()
+            //    {
+            //        Title = "Example Auction #1",
+            //        Description = "This is an example Auction",
+            //        StartTime = DateTime.Now,
+            //        EndTime = DateTime.Now.AddDays(7),
+            //        StartPrice = 1.00m,
+            //        CurrentPrice = null,
+            //    },
+            //    new Models.Auction()
+            //    {
+            //        Title = "Example Auction #2",
+            //        Description = "This is an example Auction",
+            //        StartTime = DateTime.Now,
+            //        EndTime = DateTime.Now.AddDays(7),
+            //        StartPrice = 1.00m,
+            //        CurrentPrice = null,
+            //    },
+            //    new Models.Auction()
+            //    {
+            //        Title = "Example Auction #3",
+            //        Description = "This is an example Auction",
+            //        StartTime = DateTime.Now,
+            //        EndTime = DateTime.Now.AddDays(7),
+            //        StartPrice = 1.00m,
+            //        CurrentPrice = null,
+            //    },
+            //};
             return View(auctions);
         }
 
@@ -51,15 +57,20 @@ namespace AuctionMVCSite.Controllers
 
         public ActionResult Auction( long id )
         {
-            var auction = new AuctionMVCSite.Models.Auction()
-            {
-                Title = "Example Auction",
-                Description = "This is an example Auction",
-                StartTime = DateTime.Now,
-                EndTime = DateTime.Now.AddDays(7),
-                StartPrice = 1.00m,
-                CurrentPrice = null,
-            };
+            var db = new AuctionDataContext();
+            var auction = db.Auctions.Find(id);
+
+            //var auction = new AuctionMVCSite.Models.Auction()
+            //{
+            //    Title = "Example Auction",
+            //    Description = "This is an example Auction",
+            //    StartTime = DateTime.Now,
+            //    EndTime = DateTime.Now.AddDays(7),
+            //    StartPrice = 1.00m,
+            //    CurrentPrice = null,
+            //};
+
+
             //view data dictionary 
             //ViewData["Auction"] = auction;
             //return View();
@@ -96,6 +107,12 @@ namespace AuctionMVCSite.Controllers
             if (ModelState.IsValid)
             {
                 //save to the databse
+
+                var db = new Models.AuctionDataContext();
+                db.Auctions.Add(auction);
+                db.SaveChanges();
+
+
                 return RedirectToAction("Index");
             }
 
