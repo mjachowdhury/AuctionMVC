@@ -10,6 +10,12 @@
     @RenderSection("Scripts", required: false)
 }
 
+@*I have added this if*@
+@if (IsSectionDefined("scripts"))
+{
+    RenderSection("scripts");
+}
+
 <div class="sidebar">
     @RenderSection("sidebar")
 </div>

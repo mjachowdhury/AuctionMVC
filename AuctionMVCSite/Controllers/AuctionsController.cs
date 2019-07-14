@@ -69,6 +69,7 @@ namespace AuctionMVCSite.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Create([Bind(Exclude = "CurrentPrice")]Models.Auction auction)
         {
             if (ModelState.IsValid)
