@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AuctionMVCSite.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,8 +13,20 @@ namespace AuctionMVCSite.Controllers
         [OutputCache(Duration = 3)]
         public ActionResult Index()
         {
+           
+
             ViewBag.Message = "This page was rendered at " + DateTime.Now;
             return View();
+        }
+
+        [OutputCache(Duration =3600)]
+        public ActionResult CategoryNavigation()
+        {
+            var db = new AuctionDataContext();
+            var categories = db.Auctions.Select(x => x.Category).Distinct();
+            ViewBag.Categories = categories.ToArray();
+
+            return PartialView();
         }
 
         [OutputCache(Duration = 3)]

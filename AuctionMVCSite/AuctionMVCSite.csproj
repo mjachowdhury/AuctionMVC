@@ -199,6 +199,7 @@
     <Compile Include="Controllers\AuctionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -277,6 +278,7 @@
     <Content Include="Views\Shared\_LayoutWithSidebar.cshtml" />
     <Content Include="Views\Auctions\Create.cshtml" />
     <Content Include="Views\Auctions\_CurrentPrice.cshtml" />
+    <Content Include="Views\Shared\CategoryNavigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
