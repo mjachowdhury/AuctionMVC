@@ -9,116 +9,79 @@ namespace AuctionMVCSite.Controllers
 {
     public class AuctionsController : Controller
     {
-        // GET: Auctions
+        //
+        // GET: /Auctions/
+
         public ActionResult Index()
         {
-
             var db = new AuctionDataContext();
-            var auctions = db.Auctions.ToArray(); //to arra yused to get the collection of auctions form the db
+            var auctions = db.Auctions.ToArray();
 
-
-            //var auctions = new[]{
-            //    new Models.Auction()
-            //    {
-            //        Title = "Example Auction #1",
-            //        Description = "This is an example Auction",
-            //        StartTime = DateTime.Now,
-            //        EndTime = DateTime.Now.AddDays(7),
-            //        StartPrice = 1.00m,
-            //        CurrentPrice = null,
-            //    },
-            //    new Models.Auction()
-            //    {
-            //        Title = "Example Auction #2",
-            //        Description = "This is an example Auction",
-            //        StartTime = DateTime.Now,
-            //        EndTime = DateTime.Now.AddDays(7),
-            //        StartPrice = 1.00m,
-            //        CurrentPrice = null,
-            //    },
-            //    new Models.Auction()
-            //    {
-            //        Title = "Example Auction #3",
-            //        Description = "This is an example Auction",
-            //        StartTime = DateTime.Now,
-            //        EndTime = DateTime.Now.AddDays(7),
-            //        StartPrice = 1.00m,
-            //        CurrentPrice = null,
-            //    },
-            //};
             return View(auctions);
         }
 
-        public ActionResult TempDataDemo()
-        {
-            TempData["SuccessMessage"] = "The action succeeded";
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult Auction( long id )
+        public ActionResult Auction(long id)
         {
             var db = new AuctionDataContext();
             var auction = db.Auctions.Find(id);
 
-            //var auction = new AuctionMVCSite.Models.Auction()
-            //{
-            //    Title = "Example Auction",
-            //    Description = "This is an example Auction",
-            //    StartTime = DateTime.Now,
-            //    EndTime = DateTime.Now.AddDays(7),
-            //    StartPrice = 1.00m,
-            //    CurrentPrice = null,
-            //};
-
-
-            //view data dictionary 
-            //ViewData["Auction"] = auction;
-            //return View();
-            //I can use to render view like this
             return View(auction);
         }
 
-        //here two actionresult create method one wil ldo get and other will do post 
-        //other wise asp.net will get confuse as it will be called tewo time and which oine to call fist will get confuse then will show error result
+
+        [HttpPost]
+        public ActionResult Bid(Bid bid)
+        {
+            var db = new AuctionDataContext();
+            var auction = db.Auctions.Find(bid.AuctionId);
+
+            if (auction == null)
+            {
+                ModelState.AddModelError("AuctionId", "Auction not found!");
+            }
+            else if (auction.CurrentPrice >= bid.Amount)
+            {
+                ModelState.AddModelError("Amount", "Bid amount must exceed current bid");
+            }
+            else
+            {
+                bid.Username = User.Identity.Name;
+                auction.Bids.Add(bid);
+                auction.CurrentPrice = bid.Amount;
+                db.SaveChanges();
+            }
+
+            if (!Request.IsAjaxRequest())
+                return RedirectToAction("Auction", new { id = bid.AuctionId });
+            return PartialView("_CurrentPrice", auction);
+
+            //var httpStatus = ModelState.IsValid ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
+            //return new HttpStatusCodeResult(httpStatus);
+        }
+
 
         [HttpGet]
         public ActionResult Create()
         {
-            var categoryList = new SelectList(new[] { "Automotive", "Electronics", "Games", "Homes" });
+            var categoryList = new SelectList(new[] { "Automotive", "Electronics", "Games", "Home" });
             ViewBag.CategoryList = categoryList;
             return View();
         }
 
-        //here [Bind(Exclude ="CurrentPrice")] will ignore the current price from the post so the use ca not see the current price bid
-
         [HttpPost]
-        public ActionResult Create([Bind(Exclude ="CurrentPrice")] Models.Auction auction)
+        public ActionResult Create([Bind(Exclude = "CurrentPrice")]Models.Auction auction)
         {
-            /*
-            if (string.IsNullOrWhiteSpace(auction.Title))
-            {
-                ModelState.AddModelError("Title", "Title is required");
-            }
-            else if(auction.Title.Length < 5 || auction.Title.Length > 200)
-            {
-                ModelState.AddModelError("Title", "Title must be between 5 and 200 characters long");
-            }
-            */
             if (ModelState.IsValid)
             {
-                //save to the databse
-
-                var db = new Models.AuctionDataContext();
+                // Save to the database
+                var db = new AuctionDataContext();
                 db.Auctions.Add(auction);
                 db.SaveChanges();
-
 
                 return RedirectToAction("Index");
             }
 
             return Create();
-
-          
         }
     }
 }

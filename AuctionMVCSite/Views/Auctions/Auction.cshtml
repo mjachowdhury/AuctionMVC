@@ -16,29 +16,52 @@
 
 <div class="auction">
     <h3>@auction.Title</h3>
+
+    <div class="details">
         <p>Start Time: @auction.StartTime.ToString("g")</p>
         <p>End Time: @auction.EndTime.ToString("g")</p>
         <p>Starting Price: @auction.StartPrice.ToString("C")</p>
-
-        @*
-            Since CurrentPrice is nullable we have to check to see if it has 
-            a value before we call .ToString()!                     
-        *@
-        
-        <p>Current Price:
-            @if(auction.CurrentPrice == null)
+        <p class="current-price">Current Price:
+            @*
+                Since CurrentPrice is nullable we have to check to
+                see if it has a value before we call .ToString()!
+            *@
+            @if (auction.CurrentPrice == null)
             {
-                @: [No bids]
+                <text>
+                    [No bids]
+                </text>
             }
             else
             {
                 <span>@auction.CurrentPrice.Value.ToString("C")</span>
+                <span>[@auction.BidCount bids]</span>
             }
         </p>
-    @if(auction.ImageUrl != null)
+        <p>
+            @using (Html.BeginForm("Bid", "Auctions"))
+            {
+                var lowestBidAmount = auction.CurrentPrice.GetValueOrDefault(auction.StartPrice) + 1;
+                <span>
+                    Bid: Html.TextBox("amount", lowestBidAmount)
+                    Html.ValidationMessage("amount")
+                </span>
+                <span>
+                    Html.Hidden("auctionId", auction.Id)
+                    <input class="post-bid" type="submit" value="Bid" />
+                </span>
+                
+            }
+        </p>
+    </div>
+
+         
+
+
+    @if (auction.ImageUrl != null)
     {
         <img src="@auction.ImageUrl" title="@auction.Title" />
-    }
+        }
 
     <div class="description">
         @auction.Description
@@ -46,3 +69,29 @@
 
 </div>
 
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            $('.post-bid').on("click", function () {
+
+                var form = $(this).parent("form");
+
+                $.ajax({
+                    type: "POST",
+                    url: form.attr('action'),
+                    data: form.serialize()
+                })
+                    .success(function (html) {
+                        $('_current-price').replaceWith(html);
+                        //alert("Your bid has been submitted!");
+                    })
+                    .error(function () {
+                        alert("Your bid has been rejected");
+                    });
+
+                return false;
+            });
+        });
+    </script>
+}

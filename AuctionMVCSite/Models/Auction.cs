@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -42,5 +43,20 @@ namespace AuctionMVCSite.Models
         [DataType(DataType.Currency)]
         [Display(Name = "Current Bid Price")]
         public decimal? CurrentPrice { get; set; }
+
+
+        public virtual Collection<Bid> Bids { get; private set; }
+
+        public int BidCount
+        {
+            get { return Bids.Count; }
+        }
+
+        public Auction()
+        {
+            Bids = new Collection<Bid>();
+        }
+
+
     }
 }
