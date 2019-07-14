@@ -12,7 +12,8 @@ namespace AuctionMVCSite.Controllers
         //
         // GET: /Auctions/
 
-            [AllowAnonymous]
+        [AllowAnonymous]
+        [OutputCache(Duration = 1)]
         public ActionResult Index()
         {
             var db = new AuctionDataContext();
@@ -21,6 +22,7 @@ namespace AuctionMVCSite.Controllers
             return View(auctions);
         }
 
+        [OutputCache(Duration = 1)]
         public ActionResult Auction(long id)
         {
             var db = new AuctionDataContext();

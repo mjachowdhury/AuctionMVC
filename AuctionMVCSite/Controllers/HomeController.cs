@@ -9,14 +9,17 @@ namespace AuctionMVCSite.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
+        [OutputCache(Duration = 3)]
         public ActionResult Index()
         {
+            ViewBag.Message = "This page was rendered at " + DateTime.Now;
             return View();
         }
 
+        [OutputCache(Duration = 3)]
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "This page was rendered at " + DateTime.Now;
 
             return View();
         }
