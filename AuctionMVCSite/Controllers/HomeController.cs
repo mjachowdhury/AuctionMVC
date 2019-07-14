@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.WebPages;
 
 namespace AuctionMVCSite.Controllers
 {
@@ -42,6 +43,16 @@ namespace AuctionMVCSite.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public ActionResult SwitchView(string returnUrl, bool mobile = false)
+        {
+            HttpContext.ClearOverriddenBrowser();
+            HttpContext.SetOverriddenBrowser(
+                    mobile ? BrowserOverride.Desktop : BrowserOverride.Desktop);
+
+            return Redirect(returnUrl);
+
         }
     }
 }
