@@ -52,9 +52,13 @@
         </section>
     </div>
     <div class="col-md-4">
+                @*
+                    this section for loing with extranal site liek goolge or facebook etc..
+                *@
         <section id="socialLoginForm">
             @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
         </section>
+        
     </div>
 </div>
 

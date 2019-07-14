@@ -12,6 +12,7 @@ namespace AuctionMVCSite.Controllers
         //
         // GET: /Auctions/
 
+            [AllowAnonymous]
         public ActionResult Index()
         {
             var db = new AuctionDataContext();
@@ -30,6 +31,7 @@ namespace AuctionMVCSite.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Bid(Bid bid)
         {
             var db = new AuctionDataContext();

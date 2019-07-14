@@ -13,6 +13,7 @@ using AuctionMVCSite.Models;
 namespace AuctionMVCSite.Controllers
 {
     [Authorize]
+   
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;

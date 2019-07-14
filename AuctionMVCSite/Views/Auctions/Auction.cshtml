@@ -48,6 +48,7 @@
                 </span>
                 <span>
                     Html.Hidden("auctionId", auction.Id)
+                    @Html.AntiForgeryToken()
                     <input class="post-bid" type="submit" value="Bid" />
                 </span>
                 
